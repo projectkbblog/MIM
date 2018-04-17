@@ -1,0 +1,6 @@
+﻿#### # This script will domain join the local machine and optionally rename the server to a name specified# # you will be prompted to provide the credentials of the target doamin.## Params:#    - NewServerName (mandatory) - the name that the server should be renamed to when joining the domain#    - Domain                    - the FQDN of the domain to join the server to (defaults to mimdev.local if no value is provided)#
+# Author: Andrew Silcock
+# Date Created: 16-Apr-2018
+# Version: 0.1
+#
+#####param (        [Parameter(Mandatory=$true)]        [String]$NewServerName,         [String]$Domain="mimdev.local")$ServerName = hostname"This script will perform the following actions"" 1. rename the server from '{0}' to '{1}'" -f $ServerName, $NewServerName" 2. join the server to the Active Directory domain '{0}' " -f $Domain"`nYou will be prompted to provide the administrative credentials of the {0} domain"Write-Host "Press Y to continue, or any other key to cancel"$continue = [Console]::ReadKey($true)if ($continue.keyChar -eq 'y' -or $continue.keyChar -eq 'Y'){     Add-Computer -DomainName $Domain -ComputerName $ServerName -NewName $NewServerName }else{    ""    "Cancelled - no changes were made to the system"}
