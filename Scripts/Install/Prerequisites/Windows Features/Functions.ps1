@@ -6,7 +6,15 @@
 # 
 # Author: Andrew Silcock
 # Date Created: 16-Apr-2018
-# Version: 0.1
+# Version: 0.2
+#
+# Updates 
+####################    
+# 
+# Version: 0.2  
+# Date Modified: 17-Apr-2018
+# Modifications: include additional Windows Features required for the installation of Sharepoint Foundation 2013
+#  
 #
 #####
 
@@ -70,7 +78,7 @@ function Install-NetFramework35
         $SourcePath
     )
     # Features to install for .NET 3.5
-    $Features = @("Net-Framework-Features","Net-Framework-Core")
+    $Features = @("Net-Framework-Features","Net-Framework-Core","NET-HTTP-Activation","NET-Non-HTTP-Activ")
 
     Install-WindowsFeatures -Features $Features -SourcePath $SourcePath
 }
@@ -152,7 +160,7 @@ function Install-IIS
         $PasswordResetFeatures = @("Web-Common-Http","Web-Default-Doc","Web-Dir-Browsing","Web-Static-Content","Web-Http-Errors","Web-Http-Redirect",
          "Web-App-Dev","Web-Net-Ext","Web-Asp-Net","Web-ISAPI-Ext","Web-ISAPI-Filter","Web-Health","Web-Http-Logging","Web-Request-Monitor",
          "Web-Security","Web-Basic-Auth","Web-Windows-Auth","Web-Filtering","Web-Performance","Web-Stat-Compression","Web-Dyn-Compression",
-         "Web-Mgmt-Tools")
+         "Web-Mgmt-Tools","Web-Net-Ext45","Web-Asp-Net45")
 
         $Features += $PasswordResetFeatures
     }
