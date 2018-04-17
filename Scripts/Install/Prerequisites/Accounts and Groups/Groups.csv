@@ -1,0 +1,7 @@
+﻿"sAMAccountName","Name","Description","OU"
+"MIMSyncAdmins","MIMSyncAdmins","MIM Sync Administrators group","OU=MIM,OU=Groups,OU=Services,OU=Services,DC=mimdev,DC=local"
+"MIMSyncOperators","MIMSyncOperators","MIM Sync Operators group","OU=MIM,OU=Groups,OU=Services,OU=Services,DC=mimdev,DC=local"
+"MIMSyncJoiners","MIMSyncJoiners","MIM Sync Joiners group","OU=MIM,OU=Groups,OU=Services,OU=Services,DC=mimdev,DC=local"
+"MIMSyncBrowse","MIMSyncBrowse","MIM Sync Browsers group","OU=MIM,OU=Groups,OU=Services,OU=Services,DC=mimdev,DC=local"
+"MIMSyncPasswordSet","MIMSyncPasswordSet","MIM Sync Password Set group","OU=MIM,OU=Groups,OU=Services,OU=Services,DC=mimdev,DC=local"
+

@@ -1,0 +1,8 @@
+﻿"sAMAccountName","UserPrincipalName","FirstName","LastName","OU","Password"
+"svc_mim_sync","svc_mim_sync@mimdev.local","MIM Sync",Service Account","OU=MIM,OU=Accounts,OU=Services,OU=Services,DC=mimdev,DC=local",""
+"svc_mim_adma","svc_mim_adma@mimdev.local","MIM ADMA",Service Account","OU=MIM,OU=Accounts,OU=Services,OU=Services,DC=mimdev,DC=local",""
+"svc_mim_service","svc_mim_service@mimdev.local","MIM Service",Service Account","OU=MIM,OU=Accounts,OU=Services,OU=Services,DC=mimdev,DC=local",""
+"svc_mim_servicema","svc_mim_servicema@mimdev.local","MIM Service MA",Service Account","OU=MIM,OU=Accounts,OU=Services,OU=Services,DC=mimdev,DC=local",""
+"svc_mim_sp","svc_mim_sp@mimdev.local","MIM SharePoint",Service Account","OU=MIM,OU=Accounts,OU=Services,OU=Services,DC=mimdev,DC=local",""
+"svc_mim_ssprreg","svc_mim_ssprreg@mimdev.local","MIM SSPR Registration",Service Account","OU=MIM,OU=Accounts,OU=Services,OU=Services,DC=mimdev,DC=local",""
+"svc_mim_ssprreset","svc_mim_ssprreset@mimdev.local","MIM SSPR Reset",Service Account","OU=MIM,OU=Accounts,OU=Services,OU=Services,DC=mimdev,DC=local",""
