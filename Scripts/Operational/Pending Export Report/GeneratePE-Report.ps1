@@ -1,5 +1,6 @@
 ﻿#####
 #
+# Script that will generate a pending export report using the Sync Service csexport.exe and also CSExportAnalyzer.exe which
 # can be taken from a server with Azure AD Connect installed.
 # 
 # Note: This script requires CSExportAnalyzer.exe, which can be found on servers with Azure AD Connect installed, and should be placed
