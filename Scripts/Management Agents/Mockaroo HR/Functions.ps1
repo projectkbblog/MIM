@@ -1,4 +1,6 @@
-﻿####
+﻿$TimeStampFormat =  "yyyy-MM-dd HH:mm:ss"
+
+####
 # 
 # the function calls the Mockaroo web services to retrieve additional randomised data, which is returned as an array of PowerShell objects
 # 
@@ -96,6 +98,7 @@ function Get-AllMockarooUsersFromFile
     
     $JsonFiles = Get-ChildItem -Path $DataDirectory -Filter "*.json"
     $Users = @()
+
     foreach ($JsonFile in $JsonFiles)
     {
         $UserObject = ConvertFrom-Json -InputObject (Get-Content $JsonFile.FullName -Raw)
@@ -103,4 +106,96 @@ function Get-AllMockarooUsersFromFile
     }
 
     return $Users
+}
+
+####
+# 
+# the function reads all JSON files from the specified directory that have changed since the last import
+# 
+#  Parameters:
+#    - DataDirectory - the directory where the json files should be read from (e.g. C:\Scripts\MIM\MA\Mockaroo\Data)
+#
+#  Return: an array of PowerShell objects
+#
+#  Sample usage:
+#    Get-RecentlyUpdatedMockarooUsersFromFile -DataDirectory "C:\Scripts\MIM\MA\Mockaroo\Data"
+#
+####
+function Get-RecentlyUpdatedMockarooUsersFromFile
+{
+    param
+    (
+        [parameter(Mandatory=$true)]
+        [string]$DataDirectory
+    )
+    
+    $JsonFiles = Get-ChildItem -Path $DataDirectory -Filter "*.json" | where { $_.LastWriteTime -gt (Get-LastRunTime) }
+    $Users = @()
+
+    foreach ($JsonFile in $JsonFiles)
+    {
+        $UserObject = ConvertFrom-Json -InputObject (Get-Content $JsonFile.FullName -Raw)
+        $Users +=  $UserObject
+    }
+
+    return $Users
+}
+
+####
+# 
+# sets the last run timestamp in the LastRun.json file in the MA directory
+# 
+#  Parameters:
+#    - DataDirectory - the directory where the LastRun.json file should be run from (e.g. C:\Scripts\MIM\MA\Mockaroo)
+#
+#
+#  Sample usage:
+#    Set-UpdateTimeStamp -DataDirectory "C:\Scripts\MIM\MA\Mockaroo"
+#
+####
+function Set-UpdateTimeStamp
+{
+    param
+    (
+        [parameter(Mandatory=$false)]
+        [string]$DataDirectory="C:\Scripts\MIM\MA\Mockaroo"
+    )
+
+    $UpdateFile = ("{0}\LastRun.json" -f $DataDirectory)
+
+    $DateString = (Get-Date -format $TimeStampFormat)
+
+    $obj = @{}
+    $obj['LastRunTimestamp'] = $DateString
+
+     ConvertTo-Json -InputObject $obj | Out-File $UpdateFile
+}
+
+####
+# 
+# the function reads the last run timestamp from the LastRun.json file in the MA directory
+# 
+#  Parameters:
+#    - DataDirectory - the directory where the LastRun.json file should be run from (e.g. C:\Scripts\MIM\MA\Mockaroo)
+#
+#  Return: DateTime object representing the date and time the MA was last run for an import
+#
+#  Sample usage:
+#    Get-RecentlyUpdatedMockarooUsersFromFile -DataDirectory "C:\Scripts\MIM\MA\Mockaroo"
+#
+####
+function Get-LastRunTime
+{
+    param
+    (
+        [parameter(Mandatory=$false)]
+        [string]$DataDirectory="C:\Scripts\MIM\MA\Mockaroo"
+    )
+
+    $UpdateFile = ("{0}\LastRun.json" -f $DataDirectory)
+
+    $JsonObject = ConvertFrom-Json -InputObject (Get-Content $UpdateFile -Raw)
+
+    return [datetime]::ParseExact($JsonObject.LastRunTimestamp, $TimeStampFormat, $null)
+    
 }

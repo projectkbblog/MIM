@@ -50,8 +50,14 @@ PROCESS
             
         "Delta" 
         {   
-            # Get an additional 10 users with randomised data from Mockaroo
-            $UserData =  Get-MoreMockarooUsers -MockarooURL $MockarooURL
+            # check if any of the JSON files have been updated recently - if so read them in as updates
+            $UserData = RecentlyUpdatedMockarooUsersFromFile -DataDirectory $DataDirectory 
+            
+            # if there were no file changes, then get more users from the webservice
+            if ($UserData.Count -eq 0)
+            {
+                $UserData =  Get-MoreMockarooUsers -MockarooURL $MockarooURL
+            }
         }
     }
 
@@ -69,6 +75,9 @@ PROCESS
         $CsObject = Convert-PSObjectToHashTable -ObjToConvert $User
         $CsObject
     }
+
+    # Update the last run timestamp in file
+    Set-UpdateTimeStamp
 }
 
 END
