@@ -57,6 +57,14 @@ PROCESS
             if ($UserData.Count -eq 0)
             {
                 $UserData =  Get-MoreMockarooUsers -MockarooURL $MockarooURL
+
+                # Output the new users retrieved from the web service to file
+                # so they can be read in on subsequent full imports
+                foreach ($User in $UserData)
+                {
+                    Write-UserObjectToFile -DataDirectory $DataDirectory -UserObject $User
+                }
+
             }
         }
     }
@@ -64,13 +72,6 @@ PROCESS
     # Process the user data
     foreach ($User in $UserData)
     {
-        # if the import is a Delta also drop the user data to a file 
-        # to allow all user data to be read in again on a full import
-        if ($OperationType -eq "Delta")
-        {
-            Write-UserObjectToFile -DataDirectory $DataDirectory -UserObject $User
-        }
-
         # Convert the PowerShell object to hashtable object to be provided to the MIM connector space
         $CsObject = Convert-PSObjectToHashTable -ObjToConvert $User
         $CsObject

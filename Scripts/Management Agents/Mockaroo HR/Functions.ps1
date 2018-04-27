@@ -125,8 +125,8 @@ function Get-RecentlyUpdatedMockarooUsersFromFile
 {
     param
     (
-        [parameter(Mandatory=$true)]
-        [string]$DataDirectory
+        [parameter(Mandatory=$false)]
+        [string]$DataDirectory="C:\Scripts\MIM\MA\Mockaroo\Data"
     )
     
     $JsonFiles = Get-ChildItem -Path $DataDirectory -Filter "*.json" | where { $_.LastWriteTime -gt (Get-LastRunTime) }
