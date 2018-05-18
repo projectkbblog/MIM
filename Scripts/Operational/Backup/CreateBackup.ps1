@@ -97,7 +97,7 @@ $ZipFile = ("{0}\backup_{1}.zip" -f $BackupTo,  $DateString)
 
 Create-DirectoryIfNotExists -DirectoryPath $TempBackupFolder
 
-# Copy PowerShell scripts into the target folder from the folder to backup
+# Copy files scripts into the temp target folder from the folder to backup
 if ($NoRecurse)
 {
     $ItemList = Get-ChildItem -Path $FolderToBackup -Include $Include  -Exclude $Exclude
@@ -118,7 +118,7 @@ foreach ($file in $ItemList)
 
 Write-Output ("`nBackup taken to the temporary folder '{0}' " -f $TempBackupFolder)
 
-# Create a zip file of the target backup folder
+# Create a zip file of the target backup folder if required
 if (-not $NoZip)
 {
     [io.compression.zipfile]::CreateFromDirectory($TempBackupFolder, $ZipFile)
@@ -129,7 +129,7 @@ else
     Write-Warning ("No backup ZIP file has been created" -f $ZipFile)
 }
 
-# Delete the folder now that the zip file has been created
+# Delete the folder now that the zip file has been created if required
 if (-not $NoDelete)
 {
     Write-Output ("`nDeleting the temporary folder '{0}' " -f $TempBackupFolder)
