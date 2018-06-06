@@ -1,0 +1,4 @@
+﻿"Username","NewOU"
+"aconnor","OU=Employees,OU=Users,OU=Managed Accounts,DC=pkbdev,DC=local"
+"alobb","OU=Contractors,OU=Users,OU=Managed Accounts,DC=pkbdev,DC=local"
+"bilbo","OU=Contractors,OU=Users,OU=Managed Accounts,DC=pkbdev,DC=local"
