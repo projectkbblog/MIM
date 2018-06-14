@@ -17,7 +17,7 @@
 #    
 # Author: Andrew Silcock
 # Date Created: 18-May-2018
-# Version: 0.1
+# Version: 1.0
 #
 #####
 param
@@ -162,6 +162,6 @@ if ($CreateArchive)
     Add-Type -AssemblyName "System.IO.Compression.FileSystem"
     
     $ZipFile = ("{0}backup.zip" -f $DestinationFolder)
-    $SourceFolder = "{0}Files" -f $DestinationFolder
+    $SourceFolder = "{0}\Files" -f $DestinationFolder
     [io.compression.zipfile]::CreateFromDirectory($SourceFolder, $ZipFile)
 }
