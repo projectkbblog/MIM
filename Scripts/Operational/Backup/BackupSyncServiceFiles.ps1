@@ -5,6 +5,7 @@
 #   - Perform an export of each management agent
 #   - take a backup of .exe.config files from the BIN directory of the sync service
 #   - take a backup of all files in the Extensions directory
+#   - optionall create a ZIP archive of the exported directories (using the -CreateArchive switch) and delete the exported files (using the -DeleteFiles switch)
 #
 #  The backups will be exported to a directory, that should be empty (due to limitations on the way that exports of MIM configuration works)
 #
@@ -12,19 +13,31 @@
 #     Perform a backup of the synchronization service to the specified location
 #     - Backup-SyncServiceFiles.ps1 -DestinationFolder "C:\MIM\Backups\20180518"
 #
-#     Perform a backup of the synchronization service to the specified location including a zip archieve
+#     Perform a backup of the synchronization service to the specified location
+#      and creation of a zip archive named the same as the directory (e.g. C:\MIM\Backups\20180518.zip)
 #     - Backup-SyncServiceFiles.ps1 -DestinationFolder "C:\MIM\Backups\20180518" -CreateArchive
+#
+#     Perform a backup of the synchronization service to the specified location
+#      , creation of a zip archive named the same as the directory (e.g. C:\MIM\Backups\20180518.zip)
+#      and deletion of the files in the DestinationFolder after the zip file is created
+#     - Backup-SyncServiceFiles.ps1 -DestinationFolder "C:\MIM\Backups\20180518" -CreateArchive -DeleteFiles
 #    
 # Author: Andrew Silcock
 # Date Created: 18-May-2018
-# Version: 1.0
+# Date Modified: 21-Jun-2018
+# Version: 1.1
+#
+# Changes
+#   Version 1.0 - 18-May-2018 - Initial Release
+#   Version 1.1 - 21-Jun-2018 - Add -DeleteFiles switch to allow the uncompressed files to be deleted after the ZIP file is created.
 #
 #####
 param
 (
     [Parameter(Mandatory=$true)]
     [string]$DestinationFolder,
-    [switch]$CreateArchive
+    [switch]$CreateArchive,
+    [switch]$DeleteFiles
 )
 
 # Export the server configuration
@@ -102,6 +115,7 @@ function Backup-ConfigFiles
 if (Test-Path -Path $DestinationFolder)
 {
     Write-Warning ("The folder '{0}' already exists, please specify an alternate directory that does not yet exist" -f $DestinationFolder)
+    Start-Sleep -seconds 10
     exit
 }
 
@@ -164,4 +178,13 @@ if ($CreateArchive)
     $ZipFile = ("{0}backup.zip" -f $DestinationFolder)
     $SourceFolder = "{0}\Files" -f $DestinationFolder
     [io.compression.zipfile]::CreateFromDirectory($SourceFolder, $ZipFile)
+    "Zip file created - {0} " -f $ZipFile
+
+    if ($DeleteFiles)
+    {
+        "`nDeleting the source files now the ZIP file has been created"
+        Remove-Item -Path $DestinationFolder -Recurse -Confirm:$false -Force
+        "Completed"
+
+    }
 }
