@@ -16,6 +16,13 @@ param
     [string] $AccountName
 )
 
-
 $User = Get-ADUser $AccountName -Properties 'msDS-UserPasswordExpiryTimeComputed'
-[datetime]::FromFileTime($User."msDS-UserPasswordExpiryTimeComputed")
+
+# Get the expiration date
+$Expiration = [datetime]::FromFileTime($User."msDS-UserPasswordExpiryTimeComputed")
+
+# Calculate how many days till it expires
+$Days = ($Expiration - (Get-Date)).Days
+
+""
+"Password expires in {0} days ({1})" -f $Days, $Expiration
