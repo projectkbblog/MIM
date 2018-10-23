@@ -136,10 +136,10 @@ $MAExportExe = ("{0}\maexport.exe" -f $BinDir)
 $ExtensionsDir = ("{0}extensions" -f $MimPath)
 
 # Detemrine location of export folders
-$ServerExportFolder = ("{0}\Files\Server" -f $DestinationFolder)
-$MAExportFolder = ("{0}\Files\Management Agents" -f $DestinationFolder)
-$DLLExportFolder = ("{0}\Files\Extensions" -f $DestinationFolder)
-$ConfigFiles = ("{0}\Files\Configuration Files" -f $DestinationFolder)
+$ServerExportFolder = ("{0}\SyncService\Server" -f $DestinationFolder)
+$MAExportFolder = ("{0}\SyncService\Management Agents" -f $DestinationFolder)
+$DLLExportFolder = ("{0}\SyncService\Extensions" -f $DestinationFolder)
+$ConfigFiles = ("{0}\SyncService\Configuration Files" -f $DestinationFolder)
 
 # Create the export directories
 New-Item -ItemType Directory -Path $ServerExportFolder -ErrorAction SilentlyContinue
@@ -176,7 +176,7 @@ if ($CreateArchive)
     Add-Type -AssemblyName "System.IO.Compression.FileSystem"
     
     $ZipFile = ("{0}backup.zip" -f $DestinationFolder)
-    $SourceFolder = "{0}\Files" -f $DestinationFolder
+    $SourceFolder = "{0}\SyncService" -f $DestinationFolder
     [io.compression.zipfile]::CreateFromDirectory($SourceFolder, $ZipFile)
     "Zip file created - {0} " -f $ZipFile
 
