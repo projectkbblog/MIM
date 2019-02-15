@@ -11,7 +11,7 @@
 #     - GeneratePE-Report.ps1 -ManagementAgent "ADMA"
 #
 #     Generate Pending exports for a multiple management agents
-#     - GeneratePE-Report.ps1 -ManagementAgent @("ADMA","MIM Service")
+#     - GeneratePE-Report.ps1 -ManagementAgent "ADMA","MIM Service"
 #    
 #     or 
 #     $ManagementAgents = "ADMA","MIM Service"
@@ -19,7 +19,10 @@
 #
 # Author: Andrew Silcock
 # Date Created: 23-Apr-2018
-# Version: 0.1
+# Date Updated: 15-Feb-2019
+# Version: 1.1
+#
+# Changes - 15-Feb-2019 - Version 1.1 - update to sample useage commands
 #
 #####
 
