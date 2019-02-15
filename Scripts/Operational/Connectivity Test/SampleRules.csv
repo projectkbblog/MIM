@@ -1,0 +1,23 @@
+﻿SourceHost,TargetHost,Port,Description
+MYSERVER,MYADDC001,389,connectivity from MYSERVER to MYADDC001 to port 389
+MYSERVER,MYADDC001,636,connectivity from MYSERVER to MYADDC001 to port 636
+MYSERVER,MYADDC002,389,connectivity from MYSERVER to MYADDC002 to port 389
+MYSERVER,MYADDC002,636,connectivity from MYSERVER to MYADDC002 to port 636
+*,MYADDC001,53,connectivity from any server to MYADDC001 on port 53
+*,MYADDC001,88,connectivity from any server to MYADDC001 on port 88
+*,MYADDC001,135,connectivity from any server to MYADDC001 on port 135
+*,MYADDC001,139,connectivity from any server to MYADDC001 on port 139
+*,MYADDC001,389,connectivity from any server to MYADDC001 on port 389
+*,MYADDC001,464,connectivity from any server to MYADDC001 on port 464
+*,MYADDC001,636,connectivity from any server to MYADDC001 on port 636
+*,MYADDC002,53,connectivity from any server to MYADDC002 on port 53
+*,MYADDC002,88,connectivity from any server to MYADDC002 on port 88
+*,MYADDC002,135,connectivity from any server to MYADDC002 on port 135
+*,MYADDC002,139,connectivity from any server to MYADDC002 on port 139
+*,MYADDC002,389,connectivity from any server to MYADDC002 on port 389
+*,MYADDC002,464,connectivity from any server to MYADDC002 on port 464
+*,MYADDC002,636,connectivity from any server to MYADDC002 on port 636
+MIMSYNC*,MYADDC001,389,connectivity from any server with a name like MIMSYNC* (e.g. MIMSYNC01 or MIMSYNC02) to MYADDC001 on port 389
+MIMSYNC*,MYADDC001,636,connectivity from any server with a name like MIMSYNC* (e.g. MIMSYNC01 or MIMSYNC02) to MYADDC001 on port 636
+MIMSYNC*,MYADDC002,389,connectivity from any server with a name like MIMSYNC* (e.g. MIMSYNC01 or MIMSYNC02) to MYADDC002 on port 389
+MIMSYNC*,MYADDC002,636,connectivity from any server with a name like MIMSYNC* (e.g. MIMSYNC01 or MIMSYNC02) to MYADDC002 on port 636
