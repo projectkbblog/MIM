@@ -3,9 +3,13 @@
     [Parameter(Mandatory=$false)]
     [string] $MIMServiceHost,
     [Parameter(Mandatory=$true)]
-    [string] $GroupsFile
+    [string] $GroupsFile,
+    [Parameter(Mandatory=$true)]
+    [string] $DefaultOwner
+
 )
 
+# If no MIM Service host value is provided, assume the Service is installed on the local server
 if (-not $MIMServiceHost)
 {
     $MIMServiceHost = "localhost"    
@@ -32,30 +36,50 @@ $counter = 1
 foreach($CurGroup in $GroupsCsv)
 {
     "`n{0} - {1} - Processing the Group '{2}'" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $counter, $CurGroup.DisplayName
-
-    # If the group is dynamic then get the owner/displayed owner
-    $DynamicGroup = Is-GroupDynamic -MembershipLocked $CurGroup.MembershipLocked
-    if ($DynamicGroup)
+    #$CurGroup
+    if ($CurGroup.AccountName)
     {
-        "`tResolving group owner references"
-        # Get the reference for the group owner
-        $Owner =  Get-UserByAccountName -AccountName $CurGroup.Owner
-        $DisplayedOwner = Get-UserByAccountName -AccountName $CurGroup.DisplayedOwner
+        
+        if (Does-GroupAlreadyExist -DisplayName $CurGroup.DisplayName)
+        {
+            "`tGroup already exists - no action being taken"
+        }
+        else
+        {
+            "`tResolving group owner references"
+            if (!$CurGroup.Owner)
+            {
+                ("`t`tNo owner so using the deafault {0}" -f $DefaultOwner)
+                $Owner = Get-UserByAccountName -AccountName $DefaultOwner
+            }
+            else
+            {
+                $Owner =  Get-UserByAccountName -AccountName $CurGroup.Owner
+            }
+
+            if (!$CurGroup.DisplayedOwner)
+            {
+                ("`t`tNo displayed owner so using the default {0}" -f $DefaultOwner)
+                $DisplayedOwner = Get-UserByAccountName -AccountName $DefaultOwner
+            }
+            else
+            {
+                $DisplayedOwner =  Get-UserByAccountName -AccountName $CurGroup.DisplayedOwner
+            }
+            
+            "`tGroup doesn't yet exit - creating the group"
+            # Generate the group object
+            $NewGroup = Generate-GroupObject -GroupData $CurGroup 
+
+            # SAve the resource to the MIM Service (this is a LithnetRMA cmdlet)
+            Save-Resource $NewGroup    
+            "`tGroup created"
+        }
     }
-
-    if (Does-GroupAlreadyExist -DisplayName $CurGroup.DisplayName)
+   else
     {
-        "`tGroup already exists - no action being taken"
-    }
-    else
-    {
-        "`tGroup doesn't yet exit - creating the group"
-        # Generate the group object
-        $NewGroup = Generate-GroupObject -GroupData $CurGroup 
+        "`tgroup doesnt have an account name - no action being taken"
 
-        # SAve the resource to the MIM Service (this is a LithnetRMA cmdlet)
-        Save-Resource $NewGroup    
-        "`tGroup created"
     }
     $counter++
 }

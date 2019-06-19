@@ -1,6 +1,7 @@
-﻿# Template for the group filter
+﻿# Template for the group filter (Xpath Query goes in place of {0})
 $GroupFilterTemplate = "<Filter xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" Dialect=""http://schemas.microsoft.com/2006/11/XPathFilterDialect"" xmlns=""http://schemas.xmlsoap.org/ws/2004/09/enumeration"">{0}</Filter>"
 
+# Get's a user from the MIM Service using their account name
 function Get-UserByAccountName
 {
     param
@@ -12,6 +13,7 @@ function Get-UserByAccountName
     return Get-Resource -ObjectType Person -AttributeName AccountName -AttributeValue $AccountName
 }
 
+# Checks against the MIM Service if a group already exists with the given DisplayName
 function Does-GroupAlreadyExist
 {
     param
@@ -39,6 +41,7 @@ function Does-GroupAlreadyExist
     }
 }
 
+# Determines if the group is dynamic (based on the membership locked value)
 function Is-GroupDynamic
 {
     param
@@ -57,23 +60,31 @@ function Is-GroupDynamic
     }
 }
 
+# Generates a group object that can then be saved in the MIM Service
 function Generate-GroupObject
 {
     param
     (
         $GroupData
     )
+    # determine if the group is dynamic
+    $DynamicGroup = Is-GroupDynamic -MembershipLocked $GroupData.MembershipLocked
+
+    # Create the group object
     $newObject = New-Resource -ObjectType Group
     $newObject.AccountName = $CurGroup.AccountName
     $newObject.DisplayName = $CurGroup.DisplayName
-    $newObject.MailNickname =  $CurGroup.MailNickname
-    $newObject.Description = $CurGroup.Description
     $newObject.Domain = $CurGroup.Domain
     $newObject.MembershipAddWorkflow = $CurGroup.MembershipAddWorkflow
     $newObject.MembershipLocked = $DynamicGroup
     $newObject.Scope = $CurGroup.Scope
     $newObject.Type = $CurGroup.Type
 
+    # only set mailnickname/description if they have a value
+    if ($CurGroup.MailNickname) { $newObject.MailNickname =  $CurGroup.MailNickname }
+    if ($CurGroup.Description) { $newObject.Description = $CurGroup.Description }
+
+    # only set owner attributes if they have a value
     if ($Owner)
     {
         $newObject.Owner = $Owner.ObjectID.Value;
@@ -82,7 +93,11 @@ function Generate-GroupObject
     {
         $newObject.DisplayedOwner = $DisplayedOwner.ObjectID.Value;
     }
-    $newObject.Filter = ($GroupFilterTemplate -f $CurGroup.Filter)
+    # only set the filter if a dynamic group
+    if ($DynamicGroup)
+    {
+        $newObject.Filter = ($GroupFilterTemplate -f $CurGroup.Filter)
+    }
 
     return $newObject
 }
