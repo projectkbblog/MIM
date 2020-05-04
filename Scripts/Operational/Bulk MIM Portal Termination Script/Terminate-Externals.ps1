@@ -2,7 +2,9 @@
 #
 # Script that update a user's EmployeeEndDate and EmployeeStatus within the MIM Service.  The script will generate a rollback file containing the previous values of the object in the MIM Service, and whether the operation was successful or not.
 #
-# The script must be run by a user with write access to the EmployeeendDate and EmployeeStatus attributes on user accounts in the MIM Portal, such as a Service Desk user or MIM administrator
+# Dependencies:
+#   - The script must be run by a user with write access to the EmployeeendDate and EmployeeStatus attributes on user accounts in the MIM Portal, such as a Service Desk user or MIM administrator
+#   - Depends on the LithnetRMA PowerShell module (https://github.com/lithnet/resourcemanagement-powershell/wiki/installing-the-module)
 #
 # Sample Usage:
 #    1 - Run the script, taking data from the input file C:\Scripts\UsersToTerminate.csv, making updates to the MIM Service using the localhost
